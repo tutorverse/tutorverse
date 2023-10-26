@@ -1,3 +1,4 @@
+pub mod demo;
 pub mod home;
 pub mod teacher_card;
 pub mod teacher_intro;

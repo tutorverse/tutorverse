@@ -6,15 +6,12 @@ use web_sys::{EventTarget, HtmlInputElement};
 use yew::prelude::*;
 
 use crate::{
-    app::contexts::wallet_context::WalletContext, solana::contract_client::ContractClient,
+    app::services::wallet::WalletContext, solana::contract_client::ContractClient,
     types::CreateTeacherInstruction,
 };
 
-async fn create_teacher(
-    wallet: Rc<WalletContext>,
-    teacher: CreateTeacherInstruction,
-) -> Result<()> {
-    let client = ContractClient::local();
+async fn create_teacher(wallet: WalletContext, teacher: CreateTeacherInstruction) -> Result<()> {
+    let client = ContractClient::default();
 
     let pk = wallet.pubkey().context("Wallet not connected")?;
     let mut tx = client.build_create_teacher_tx(teacher, &pk).await?;
@@ -28,7 +25,7 @@ async fn create_teacher(
 
 #[function_component(TeacherSignUp)]
 pub fn teacher_signup() -> Html {
-    let wallet = use_context::<Rc<WalletContext>>().expect("WalletContext not found");
+    let wallet = use_context::<WalletContext>().expect("WalletContext not found");
 
     let teacher = use_state(|| CreateTeacherInstruction::default());
     let teacher_clone = teacher.clone();

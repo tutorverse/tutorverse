@@ -4,27 +4,24 @@ use yew::prelude::*;
 use yew_router::{BrowserRouter, Switch};
 
 use crate::app::{
-    components::navbar::Navbar, contexts::wallet_context::WalletContext, pages::home::Home,
-    router::Route,
+    components::navbar::Navbar, pages::home::Home, router::Route, services::wallet::WalletProvider,
 };
 
 mod components;
-mod contexts;
 mod pages;
 mod router;
+mod services;
 
 #[function_component(App)]
 pub fn app() -> Html {
-    let wallet = use_memo((), |_| WalletContext::new());
-
     html! {
-        <ContextProvider<Rc<WalletContext>> context={wallet}>
+        <WalletProvider>
             <BrowserRouter>
                 <Navbar />
                 <main>
                     <Switch<Route> render={router::switch} />
                 </main>
             </BrowserRouter>
-        </ContextProvider<Rc<WalletContext>>>
+        </WalletProvider>
     }
 }

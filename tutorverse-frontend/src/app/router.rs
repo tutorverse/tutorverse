@@ -6,7 +6,7 @@ use yew_router::Routable;
 use super::{
     components::date_picker::DatePicker,
     pages::{
-        teacher_intro::TeacherIntro, teacher_profile::TeacherProfile,
+        demo::Demo, teacher_intro::TeacherIntro, teacher_profile::TeacherProfile,
         teacher_public_profile::TeacherPublicProfile, teacher_search::TeacherSearch,
         teacher_signup::TeacherSignUp, test_all::TestAll,
     },
@@ -15,6 +15,8 @@ use super::{
 #[derive(Clone, Debug, Routable, PartialEq, Sequence)]
 pub enum Route {
     #[at("/")]
+    Demo,
+    #[at("/home")]
     Home,
     #[at("/teacher-intro")]
     TeacherIntro,
@@ -38,6 +40,7 @@ pub enum Route {
 
 pub fn switch(routes: Route) -> Html {
     match routes {
+        Route::Demo => html! { <Demo /> },
         Route::Home => html! { <Home />},
         Route::ComponentDatePicker => html! { <DatePicker />},
         Route::TeacherIntro => html! { <TeacherIntro />},

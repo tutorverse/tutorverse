@@ -38,6 +38,5 @@ web-sys = { version = "0.3.64", features = ["HtmlSelectElement"] }
 yew = { version = "0.21", features = ["csr"] }
 yew-router = "0.18"
 
-
 [dev-dependencies]
 wasm-bindgen-test = "0.3.0"

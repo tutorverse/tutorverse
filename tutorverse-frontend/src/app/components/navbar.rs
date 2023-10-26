@@ -4,16 +4,16 @@ use yew::prelude::*;
 use yew_router::prelude::Link;
 
 use crate::{
-    app::{contexts::wallet_context::WalletContext, router::Route},
+    app::{
+        router::Route,
+        services::wallet::{WalletAction, WalletContext},
+    },
     util::DEBUG,
 };
 
 #[function_component(Navbar)]
 pub fn app() -> Html {
-    let wallet = use_context::<Rc<WalletContext>>().expect("could not get wallet context");
-
-    let pk = wallet.pubkey();
-    let trigger = use_force_update();
+    let wallet = use_context::<WalletContext>().expect("could not get wallet context");
 
     let all_pages_link = match DEBUG {
         true => html! {
@@ -24,26 +24,36 @@ pub fn app() -> Html {
         false => html! {},
     };
 
-    let mut connect_btn = html! {
-        <button onclick={move |_| {
-            let w = wallet.clone();
-            let t = trigger.clone();
-            wasm_bindgen_futures::spawn_local(async move {
-                w.connect().await.expect("could not connect to wallet");
-                t.force_update();
-            });
-        }} class="btn btn-primary">{"Connect"}</button>
+    let wallet_clone = wallet.clone();
+    let on_click_connect = move |_| {
+        let w = wallet_clone.clone();
+        wasm_bindgen_futures::spawn_local(async move {
+            let pubkey = w.connect().await.expect("could not connect to wallet");
+            log::info!("Connected to wallet: {}", pubkey);
+
+            w.dispatch(WalletAction::UpdatePubkey(Some(pubkey)))
+        });
     };
 
-    if let Some(pk) = pk {
-        let l = pk.to_string().len();
-        let chars: Vec<char> = pk.to_string().chars().collect();
-        let start: String = chars[..4].iter().collect();
-        let end: String = chars[l - 4..l].iter().collect();
-        let pk_short = format!("{start}...{end}");
+    let wallet_clone = wallet.clone();
+    let on_click_disconnect = move |_| {
+        let w = wallet_clone.clone();
+        wasm_bindgen_futures::spawn_local(async move {
+            w.disconnect()
+                .await
+                .expect("could not disconnect from wallet");
 
+            w.dispatch(WalletAction::UpdatePubkey(None));
+        });
+    };
+
+    let mut connect_btn = html! {
+        <button onclick={on_click_connect} class="btn btn-primary">{"Connect"}</button>
+    };
+
+    if wallet.is_connected() {
         connect_btn = html! {
-            <button disabled={true} class="btn btn-primary">{pk_short}</button>
+            <button onclick={on_click_disconnect} class="btn btn-primary">{wallet.pubkey_short()}</button>
         }
     }
 

@@ -24,6 +24,21 @@ pub struct ContractClient {
     pub inner: SolanaRpcClient,
 }
 
+impl Default for ContractClient {
+    fn default() -> Self {
+        // when build without --release use localnet
+        #[cfg(debug_assertions)]
+        {
+            Self::local()
+        }
+        // when build with --release use devnet
+        #[cfg(not(debug_assertions))]
+        {
+            Self::dev()
+        }
+    }
+}
+
 #[derive(Debug)]
 pub enum TutorverseInstruction {
     Initialize,
@@ -285,7 +300,7 @@ mod tests {
     async fn test_create_config() -> Result<()> {
         wasm_logger::init(wasm_logger::Config::default());
 
-        let client = ContractClient::local();
+        let client = ContractClient::default();
 
         let tx = client.create_config(&TEST_KEYPAIR.pubkey())?;
         let tx = client.inner.sign_tx(tx, &TEST_KEYPAIR).await?;
@@ -300,7 +315,7 @@ mod tests {
     async fn test_get_config() -> Result<()> {
         wasm_logger::init(wasm_logger::Config::default());
 
-        let client = ContractClient::local();
+        let client = ContractClient::default();
 
         let conf = client.get_config().await?;
 
@@ -313,7 +328,7 @@ mod tests {
     async fn test_get_teachers() -> Result<()> {
         wasm_logger::init(wasm_logger::Config::default());
 
-        let client = ContractClient::local();
+        let client = ContractClient::default();
 
         let teachers = client.get_teachers().await?;
 
@@ -326,7 +341,7 @@ mod tests {
     async fn test_create_teacher() -> Result<()> {
         wasm_logger::init(wasm_logger::Config::default());
 
-        let client = ContractClient::local();
+        let client = ContractClient::default();
 
         let instr = CreateTeacherInstruction {
             title: "test".to_string(),
@@ -350,7 +365,7 @@ mod tests {
     async fn test_register_subject() -> Result<()> {
         wasm_logger::init(wasm_logger::Config::default());
 
-        let client = ContractClient::local();
+        let client = ContractClient::default();
 
         let pk = TEST_KEYPAIR.pubkey();
 
@@ -371,7 +386,7 @@ mod tests {
     async fn get_get_teachers() -> Result<()> {
         wasm_logger::init(wasm_logger::Config::default());
 
-        let client = ContractClient::local();
+        let client = ContractClient::default();
         let teachers = client.get_teachers().await?;
 
         log::debug!("{:?}", teachers);

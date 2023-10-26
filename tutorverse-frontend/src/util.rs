@@ -27,6 +27,13 @@ impl LocalStorage {
             .set_item(key, value)
             .map_err(|e| anyhow!("{:?}", e))?)
     }
+
+    pub fn remove(&self, key: &str) -> Result<()> {
+        Ok(self
+            .inner
+            .remove_item(key)
+            .map_err(|e| anyhow!("{:?}", e))?)
+    }
 }
 
 fn local_storage() -> Result<Storage> {

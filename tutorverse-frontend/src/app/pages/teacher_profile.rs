@@ -7,14 +7,14 @@ use yew::prelude::*;
 use num_traits::{FromPrimitive, ToPrimitive};
 
 use crate::{
-    app::contexts::wallet_context::WalletContext,
+    app::services::wallet::WalletContext,
     solana::contract_client::ContractClient,
     types::{Subject, YewTeacher},
 };
 use anyhow::{Context, Result};
 
-async fn register_subject(wallet: Rc<WalletContext>, subject: Subject) -> Result<()> {
-    let client = ContractClient::local();
+async fn register_subject(wallet: WalletContext, subject: Subject) -> Result<()> {
+    let client = ContractClient::default();
     let pk = wallet.pubkey().context("Wallet not connected")?;
     let mut tx = client.register_subject(&pk, subject as u32).await?;
     tx.message.recent_blockhash = client.inner.get_latest_blockhash().await?;
@@ -23,8 +23,8 @@ async fn register_subject(wallet: Rc<WalletContext>, subject: Subject) -> Result
     Ok(())
 }
 
-async fn get_teacher(wallet: Rc<WalletContext>) -> Result<YewTeacher> {
-    let client = ContractClient::local();
+async fn get_teacher(wallet: WalletContext) -> Result<YewTeacher> {
+    let client = ContractClient::default();
     let pk = wallet.pubkey().context("Wallet not connected")?;
     let teacher = client.get_teacher_by_pubkey(&pk).await?;
     Ok(teacher.into())
@@ -36,7 +36,7 @@ async fn get_teacher(wallet: Rc<WalletContext>) -> Result<YewTeacher> {
 pub fn teacher_profile() -> Html {
     let teacher = use_state(|| YewTeacher::default());
     let subject = use_state(|| Subject::Math);
-    let wallet = use_context::<Rc<WalletContext>>().expect("no wallet context found");
+    let wallet = use_context::<WalletContext>().expect("no wallet context found");
 
     let wallet_clone = wallet.clone();
     let teacher_clone = teacher.clone();

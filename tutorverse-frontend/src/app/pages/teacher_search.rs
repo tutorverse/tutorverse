@@ -9,7 +9,7 @@ pub fn teacher_search() -> Html {
 
     use_effect_with((), move |_| {
         wasm_bindgen_futures::spawn_local(async move {
-            let client = crate::solana::contract_client::ContractClient::local();
+            let client = crate::solana::contract_client::ContractClient::default();
             match client.get_teachers().await {
                 Ok(t) => {
                     log::info!("Teachers: {:?}", t);
