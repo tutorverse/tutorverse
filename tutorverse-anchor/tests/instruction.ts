@@ -1,8 +1,8 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
-import { Eduverse } from "../target/types/eduverse";
+import { Tutorverse } from "../target/types/tutorverse";
 
-export const initialize = async (program: Program<Eduverse>, txPayer: anchor.web3.Signer, accConfig: anchor.web3.PublicKey) => {
+export const initialize = async (program: Program<Tutorverse>, txPayer: anchor.web3.Signer, accConfig: anchor.web3.PublicKey) => {
     let tx;
     try {
         tx = await program.methods
@@ -22,7 +22,7 @@ export const initialize = async (program: Program<Eduverse>, txPayer: anchor.web
     return await program.account.config.fetch(accConfig);
 }
 
-export const createTeacher = async (program: Program<Eduverse>, accConfig: anchor.web3.PublicKey, txPayer: anchor.web3.Signer, accTeacherProfile: anchor.web3.PublicKey, accTeacherById: anchor.web3.PublicKey) => {
+export const createTeacher = async (program: Program<Tutorverse>, accConfig: anchor.web3.PublicKey, txPayer: anchor.web3.Signer, accTeacherProfile: anchor.web3.PublicKey, accTeacherById: anchor.web3.PublicKey) => {
     let tx;
     try {
         tx = await program.methods
@@ -44,7 +44,7 @@ export const createTeacher = async (program: Program<Eduverse>, accConfig: ancho
     return await program.account.teacher.fetch(accTeacherProfile);
 }
 
-export const createStudent = async (program: Program<Eduverse>, accConfig: anchor.web3.PublicKey, txPayer: anchor.web3.Signer, accStudentProfile: anchor.web3.PublicKey, accStudentById: anchor.web3.PublicKey) => {
+export const createStudent = async (program: Program<Tutorverse>, accConfig: anchor.web3.PublicKey, txPayer: anchor.web3.Signer, accStudentProfile: anchor.web3.PublicKey, accStudentById: anchor.web3.PublicKey) => {
     let tx;
     try {
         tx = await program.methods
@@ -66,7 +66,7 @@ export const createStudent = async (program: Program<Eduverse>, accConfig: ancho
     return await program.account.student.fetch(accStudentProfile);
 }
 
-export const registerSubject = async (program: Program<Eduverse>, txPayer: anchor.web3.Signer, accTeacherProfile: anchor.web3.PublicKey, accSubjectConfig: anchor.web3.PublicKey, accSubjectTeacher: anchor.web3.PublicKey, subjectId: number) => {
+export const registerSubject = async (program: Program<Tutorverse>, txPayer: anchor.web3.Signer, accTeacherProfile: anchor.web3.PublicKey, accSubjectConfig: anchor.web3.PublicKey, accSubjectTeacher: anchor.web3.PublicKey, subjectId: number) => {
     let tx;
     try {
         tx = await program.methods
@@ -88,7 +88,7 @@ export const registerSubject = async (program: Program<Eduverse>, txPayer: ancho
     return await program.account.subjectTeacher.fetch(accSubjectTeacher);
 }
 
-export const registerLesson = async (program: Program<Eduverse>, txPayer: anchor.web3.Signer, accTeacherById: anchor.web3.PublicKey, accTeacherProfile: anchor.web3.PublicKey, accStudentById: anchor.web3.PublicKey, accStudentProfile: anchor.web3.PublicKey, accLesson: anchor.web3.PublicKey, teacherId: number, studentId: number, subjectId: number, fee: anchor.BN, duration: number, dateTime: anchor.BN, expectedError: String) => {
+export const registerLesson = async (program: Program<Tutorverse>, txPayer: anchor.web3.Signer, accTeacherById: anchor.web3.PublicKey, accTeacherProfile: anchor.web3.PublicKey, accStudentById: anchor.web3.PublicKey, accStudentProfile: anchor.web3.PublicKey, accLesson: anchor.web3.PublicKey, teacherId: number, studentId: number, subjectId: number, fee: anchor.BN, duration: number, dateTime: anchor.BN, expectedError: String) => {
     let tx;
     try {
         tx = await program.methods
@@ -114,7 +114,7 @@ export const registerLesson = async (program: Program<Eduverse>, txPayer: anchor
     return await program.account.lesson.fetch(accLesson);
 }
 
-export const approveLesson = async (program: Program<Eduverse>, txPayer: anchor.web3.Signer, accTeacherById: anchor.web3.PublicKey, accTeacherProfile: anchor.web3.PublicKey, accLesson: anchor.web3.PublicKey, teacherId: number, lessonId: number, expectedError: String) => {
+export const approveLesson = async (program: Program<Tutorverse>, txPayer: anchor.web3.Signer, accTeacherById: anchor.web3.PublicKey, accTeacherProfile: anchor.web3.PublicKey, accLesson: anchor.web3.PublicKey, teacherId: number, lessonId: number, expectedError: String) => {
     let tx;
     try {
         tx = await program.methods
@@ -138,7 +138,7 @@ export const approveLesson = async (program: Program<Eduverse>, txPayer: anchor.
     return await program.account.lesson.fetch(accLesson);
 }
 
-export const fundLesson = async (program: Program<Eduverse>, txPayer: anchor.web3.Signer, accTeacherById: anchor.web3.PublicKey, accTeacherProfile: anchor.web3.PublicKey, accStudentById: anchor.web3.PublicKey, accStudentProfile: anchor.web3.PublicKey, accLesson: anchor.web3.PublicKey, teacherId: number, lessonId: number, studentId: number, expectedError: String) => {
+export const fundLesson = async (program: Program<Tutorverse>, txPayer: anchor.web3.Signer, accTeacherById: anchor.web3.PublicKey, accTeacherProfile: anchor.web3.PublicKey, accStudentById: anchor.web3.PublicKey, accStudentProfile: anchor.web3.PublicKey, accLesson: anchor.web3.PublicKey, teacherId: number, lessonId: number, studentId: number, expectedError: String) => {
     let tx;
     try {
         tx = await program.methods
@@ -164,7 +164,7 @@ export const fundLesson = async (program: Program<Eduverse>, txPayer: anchor.web
     return await program.account.lesson.fetch(accLesson);
 }
 
-export const startLesson = async (program: Program<Eduverse>, txPayer: anchor.web3.Signer, accTeacherById: anchor.web3.PublicKey, accTeacherProfile: anchor.web3.PublicKey, accStudentById: anchor.web3.PublicKey, accStudentProfile: anchor.web3.PublicKey, accLesson: anchor.web3.PublicKey, teacherId: number, lessonId: number, studentId: number, expectedError: String) => {
+export const startLesson = async (program: Program<Tutorverse>, txPayer: anchor.web3.Signer, accTeacherById: anchor.web3.PublicKey, accTeacherProfile: anchor.web3.PublicKey, accStudentById: anchor.web3.PublicKey, accStudentProfile: anchor.web3.PublicKey, accLesson: anchor.web3.PublicKey, teacherId: number, lessonId: number, studentId: number, expectedError: String) => {
     let tx;
     try {
         tx = await program.methods
@@ -190,7 +190,7 @@ export const startLesson = async (program: Program<Eduverse>, txPayer: anchor.we
     return await program.account.lesson.fetch(accLesson);
 }
 
-export const closeLesson = async (program: Program<Eduverse>, txPayer: anchor.web3.Signer, accTeacherById: anchor.web3.PublicKey, accTeacherProfile: anchor.web3.PublicKey, accStudentById: anchor.web3.PublicKey, accStudentProfile: anchor.web3.PublicKey, accLesson: anchor.web3.PublicKey, teacherId: number, lessonId: number, studentId: number, expectedError: String) => {
+export const closeLesson = async (program: Program<Tutorverse>, txPayer: anchor.web3.Signer, accTeacherById: anchor.web3.PublicKey, accTeacherProfile: anchor.web3.PublicKey, accStudentById: anchor.web3.PublicKey, accStudentProfile: anchor.web3.PublicKey, accLesson: anchor.web3.PublicKey, teacherId: number, lessonId: number, studentId: number, expectedError: String) => {
     let tx;
     try {
         tx = await program.methods

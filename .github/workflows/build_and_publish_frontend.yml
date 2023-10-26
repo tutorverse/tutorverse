@@ -14,7 +14,7 @@ on:
     branches: ["main"]
     paths:
       [
-        "eduverse-frontend/**",
+        "tutorverse-frontend/**",
         "Dockerfile.frontend",
         ".github/workflows/build_and_publish_frontend.yml",
       ]

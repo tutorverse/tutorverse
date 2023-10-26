@@ -1,3 +1,3 @@
 # Apply override to all files in the directory
-/eduverse-frontend/assets/* linguist-vendored
-/eduverse-frontend/assets/**/* linguist-vendored
+/tutorverse-frontend/assets/* linguist-vendored
+/tutorverse-frontend/assets/**/* linguist-vendored

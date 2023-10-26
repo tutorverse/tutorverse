@@ -1,14 +1,14 @@
 [workspace]
 members = [
-    "eduverse-anchor/programs/*",
-    "eduverse-anchor/anchor-wasm",
-    "eduverse-frontend",
+    "tutorverse-anchor/programs/*",
+    "tutorverse-anchor/anchor-wasm",
+    "tutorverse-frontend",
 ]
 
 resolver = "2"
 
 
 [workspace.dependencies]
-eduverse-contract = { path = "eduverse-anchor/programs/eduverse-contract", default-features = false, features = [
+tutorverse-contract = { path = "tutorverse-anchor/programs/tutorverse-contract", default-features = false, features = [
     "wasm",
 ] }

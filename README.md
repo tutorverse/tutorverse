@@ -1,4 +1,4 @@
-# Eduverse
+# Tutorverse
 
 Introducing our decentralized 1-on-1 mentoring platform, built on the Solana blockchain and powered by a WebAssembly (WASM) frontend. Our platform connects students and teachers seamlessly from across the globe in a borderless manner.
 

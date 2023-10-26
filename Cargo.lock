@@ -867,48 +867,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "eduverse-contract"
-version = "0.1.0"
-dependencies = [
- "anchor-lang",
- "anchor-wasm",
- "borsh 0.10.3",
- "solana-program",
-]
-
-[[package]]
-name = "eduverse-frontend"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "base64 0.21.4",
- "bincode",
- "borsh 0.10.3",
- "eduverse-contract",
- "enum-iterator",
- "getrandom 0.2.10",
- "gloo-net 0.4.0",
- "gloo-utils 0.2.0",
- "hex",
- "js-sys",
- "lazy_static",
- "log",
- "num-derive 0.4.1",
- "num-traits",
- "serde",
- "serde-wasm-bindgen 0.6.0",
- "serde_json",
- "solana-sdk",
- "wasm-bindgen",
- "wasm-bindgen-futures",
- "wasm-bindgen-test",
- "wasm-logger",
- "web-sys",
- "yew",
- "yew-router",
-]
-
-[[package]]
 name = "either"
 version = "1.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2765,6 +2723,48 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c06d3da6113f116aaee68e4d601191614c9053067f9ab7f6edbcb161237daa54"
 dependencies = [
  "once_cell",
+]
+
+[[package]]
+name = "tutorverse-contract"
+version = "0.1.0"
+dependencies = [
+ "anchor-lang",
+ "anchor-wasm",
+ "borsh 0.10.3",
+ "solana-program",
+]
+
+[[package]]
+name = "tutorverse-frontend"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "base64 0.21.4",
+ "bincode",
+ "borsh 0.10.3",
+ "enum-iterator",
+ "getrandom 0.2.10",
+ "gloo-net 0.4.0",
+ "gloo-utils 0.2.0",
+ "hex",
+ "js-sys",
+ "lazy_static",
+ "log",
+ "num-derive 0.4.1",
+ "num-traits",
+ "serde",
+ "serde-wasm-bindgen 0.6.0",
+ "serde_json",
+ "solana-sdk",
+ "tutorverse-contract",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "wasm-bindgen-test",
+ "wasm-logger",
+ "web-sys",
+ "yew",
+ "yew-router",
 ]
 
 [[package]]

@@ -51,7 +51,7 @@ pub fn app() -> Html {
         <nav class="navbar bg-body-tertiary navbar-expand-md">
             <div class="container-fluid">
                 <div class="d-flex">
-                    <Link<Route> to={Route::Home} classes="navbar-brand">{ "Eduverse" } </Link<Route>>
+                    <Link<Route> to={Route::Home} classes="navbar-brand">{ "Tutorverse" } </Link<Route>>
                     <div class="input-group ms-2" style="width: 300px">
                         <input type="text" class="form-control" placeholder="Search" aria-label="Search" />
                         <span class="input-group-text" id="basic-addon2">

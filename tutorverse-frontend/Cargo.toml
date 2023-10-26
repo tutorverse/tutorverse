@@ -1,14 +1,14 @@
 [package]
-name = "eduverse-frontend"
+name = "tutorverse-frontend"
 version = "0.1.0"
 edition = "2021"
-description = "Frontend for the eduverse project"
+description = "Frontend for the tutorverse project"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
-keywords = ["eduverse"]
+keywords = ["tutorverse"]
 
 [dependencies]
-eduverse-contract = { path = "../eduverse-anchor/programs/eduverse-contract", default-features = false, features = [
+tutorverse-contract = { path = "../tutorverse-anchor/programs/tutorverse-contract", default-features = false, features = [
     "wasm",
 ] }
 

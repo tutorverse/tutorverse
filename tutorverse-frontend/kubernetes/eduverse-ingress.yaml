@@ -1,8 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: eduverse
-  namespace: eduverse
+  name: tutorverse
+  namespace: tutorverse
   annotations:
     kubernetes.io/ingress.class: "traefik"
     cert-manager.io/cluster-issuer: "default-issuer"
@@ -10,16 +10,16 @@ metadata:
 spec:
   tls:
     - hosts:
-        - eduverse.mucks.dev
-      secretName: tls-eduverse-mucks-dev
+        - tutorverse.mucks.dev
+      secretName: tls-tutorverse-mucks-dev
   rules:
-    - host: eduverse.mucks.dev
+    - host: tutorverse.mucks.dev
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: eduverse
+                name: tutorverse
                 port:
                   number: 80

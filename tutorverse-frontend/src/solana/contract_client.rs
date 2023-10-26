@@ -5,7 +5,6 @@ use crate::types::CreateTeacherInstruction;
 use super::rpc_client::SolanaRpcClient;
 use anyhow::{Context, Result};
 use borsh::{to_vec, BorshDeserialize};
-use eduverse_contract::state::{Config, Teacher};
 use num_traits::ToBytes;
 use solana_sdk::{
     instruction::{AccountMeta, Instruction},
@@ -13,9 +12,10 @@ use solana_sdk::{
     pubkey::Pubkey,
     transaction::Transaction,
 };
+use tutorverse_contract::state::{Config, Teacher};
 
 lazy_static::lazy_static! {
-    pub static ref PROGRAM_ID: Pubkey = Pubkey::from_str("DMk4dLgAZvP84jxzgZZgS1R5WXGMi4wXHdj7cdi3sKuR").expect("invalid PROGRAM_ID");
+    pub static ref PROGRAM_ID: Pubkey = Pubkey::from_str("7Dco5qTKFzHWKTnZoG93n73DEroWAcLxPJ1g8RiFaXLX").expect("invalid PROGRAM_ID");
     pub static ref SYSTEM_PROGRAM_ID: Pubkey = Pubkey::from_str("11111111111111111111111111111111").expect("invalid SYSTEM_PROGRAM_ID");
     pub static ref SYS_VAR_RENT: Pubkey = Pubkey::from_str("SysvarRent111111111111111111111111111111111").expect("invalid SYS_VAR_RENT");
 }
@@ -25,18 +25,18 @@ pub struct ContractClient {
 }
 
 #[derive(Debug)]
-pub enum EduverseInstruction {
+pub enum TutorverseInstruction {
     Initialize,
     CreateTeacher(CreateTeacherInstruction),
     RegisterSubject(u32),
 }
 
-impl EduverseInstruction {
+impl TutorverseInstruction {
     pub fn sighash(&self) -> [u8; 8] {
         match self {
-            EduverseInstruction::Initialize => sighash("initialize"),
-            EduverseInstruction::CreateTeacher(_) => sighash("create_teacher_profile"),
-            EduverseInstruction::RegisterSubject(_) => sighash("teacher_register_subject"),
+            TutorverseInstruction::Initialize => sighash("initialize"),
+            TutorverseInstruction::CreateTeacher(_) => sighash("create_teacher_profile"),
+            TutorverseInstruction::RegisterSubject(_) => sighash("teacher_register_subject"),
         }
     }
 
@@ -44,8 +44,8 @@ impl EduverseInstruction {
         let mut bytes = self.sighash().to_vec();
 
         let args = match self {
-            EduverseInstruction::CreateTeacher(teacher) => to_vec(&teacher)?,
-            EduverseInstruction::RegisterSubject(subject_id) => subject_id.to_le_bytes().to_vec(),
+            TutorverseInstruction::CreateTeacher(teacher) => to_vec(&teacher)?,
+            TutorverseInstruction::RegisterSubject(subject_id) => subject_id.to_le_bytes().to_vec(),
             _ => vec![],
         };
 
@@ -78,7 +78,7 @@ impl ContractClient {
     pub fn create_tx(
         &self,
         payer: &Pubkey,
-        instr: EduverseInstruction,
+        instr: TutorverseInstruction,
         accounts: Vec<AccountMeta>,
     ) -> Result<Transaction> {
         let instr_data = instr.to_bytes()?;
@@ -104,7 +104,7 @@ impl ContractClient {
             AccountMeta::new(*SYSTEM_PROGRAM_ID, false),
         ];
 
-        let tx = self.create_tx(payer, EduverseInstruction::Initialize, accounts)?;
+        let tx = self.create_tx(payer, TutorverseInstruction::Initialize, accounts)?;
 
         Ok(tx)
     }
@@ -193,7 +193,7 @@ impl ContractClient {
         ];
         let tx = self.create_tx(
             payer,
-            EduverseInstruction::RegisterSubject(subject_id),
+            TutorverseInstruction::RegisterSubject(subject_id),
             accounts,
         )?;
         Ok(tx)
@@ -226,7 +226,7 @@ impl ContractClient {
             AccountMeta::new(*SYSTEM_PROGRAM_ID, false),
         ];
 
-        let tx = self.create_tx(payer, EduverseInstruction::CreateTeacher(instr), accounts)?;
+        let tx = self.create_tx(payer, TutorverseInstruction::CreateTeacher(instr), accounts)?;
         Ok(tx)
     }
 

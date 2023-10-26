@@ -1,7 +1,7 @@
 use borsh::BorshSerialize;
-use eduverse_contract::state::Teacher;
 use num_traits::FromPrimitive;
 use serde::{Deserialize, Serialize};
+use tutorverse_contract::state::Teacher;
 use yew::Properties;
 
 use super::Subject;

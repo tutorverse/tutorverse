@@ -40,11 +40,11 @@ pub(crate) use use_anchor_encoding;
 use crate::instructions::*;
 
 #[cfg(feature = "anchor")]
-declare_id!("DMk4dLgAZvP84jxzgZZgS1R5WXGMi4wXHdj7cdi3sKuR");
+declare_id!("7Dco5qTKFzHWKTnZoG93n73DEroWAcLxPJ1g8RiFaXLX");
 
 #[cfg(feature = "anchor")]
 #[program]
-pub mod eduverse_contract {
+pub mod tutorverse_contract {
     use super::*;
 
     /// Initialize the app state

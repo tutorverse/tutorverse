@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: eduverse
-  namespace: eduverse
+  name: tutorverse
+  namespace: tutorverse
   labels:
-    app: eduverse
+    app: tutorverse
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: eduverse
+      app: tutorverse
   template:
     metadata:
       labels:
-        app: eduverse
+        app: tutorverse
     spec:
       containers:
-        - name: eduverse
-          image: ghcr.io/mucks/eduverse-frontend-rs:master
+        - name: tutorverse
+          image: ghcr.io/mucks/tutorverse-frontend-rs:master
           imagePullPolicy: Always
           ports:
             - containerPort: 80

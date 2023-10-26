@@ -2,7 +2,7 @@
 seeds = false
 skip-lint = false
 [programs.localnet]
-eduverse_contract = "DMk4dLgAZvP84jxzgZZgS1R5WXGMi4wXHdj7cdi3sKuR"
+tutorverse_contract = "7Dco5qTKFzHWKTnZoG93n73DEroWAcLxPJ1g8RiFaXLX"
 
 [registry]
 url = "https://api.apr.dev"
@@ -12,7 +12,7 @@ cluster = "localnet"
 wallet = "~/.config/solana/id.json"
 
 [workspace]
-members = ["./eduverse-anchor/programs/eduverse-contract"]
+members = ["./tutorverse-anchor/programs/tutorverse-contract"]
 
 [scripts]
-test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 ./eduverse-anchor/tests/**/*.ts"
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 ./tutorverse-anchor/tests/**/*.ts"

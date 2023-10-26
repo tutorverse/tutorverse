@@ -19,49 +19,49 @@ COPY Cargo.toml Cargo.toml
 COPY Cargo.lock Cargo.lock
 
 # copy anchor structure 
-RUN mkdir eduverse-anchor
+RUN mkdir tutorverse-anchor
 # anchor contract
-RUN mkdir -p  eduverse-anchor/programs/eduverse-contract/src
-COPY eduverse-anchor/programs/eduverse-contract/Cargo.toml eduverse-anchor/programs/eduverse-contract/Cargo.toml
-RUN touch eduverse-anchor/programs/eduverse-contract/src/lib.rs
+RUN mkdir -p  tutorverse-anchor/programs/tutorverse-contract/src
+COPY tutorverse-anchor/programs/tutorverse-contract/Cargo.toml tutorverse-anchor/programs/tutorverse-contract/Cargo.toml
+RUN touch tutorverse-anchor/programs/tutorverse-contract/src/lib.rs
 
 # anchor-wasm
-RUN mkdir -p eduverse-anchor/anchor-wasm/src
-COPY eduverse-anchor/anchor-wasm/Cargo.toml ./eduverse-anchor/anchor-wasm/Cargo.toml
-RUN touch eduverse-anchor/anchor-wasm/src/lib.rs
+RUN mkdir -p tutorverse-anchor/anchor-wasm/src
+COPY tutorverse-anchor/anchor-wasm/Cargo.toml ./tutorverse-anchor/anchor-wasm/Cargo.toml
+RUN touch tutorverse-anchor/anchor-wasm/src/lib.rs
 
 # frontend
-RUN mkdir -p eduverse-frontend/src
-COPY eduverse-frontend/Cargo.toml ./eduverse-frontend/Cargo.toml
-RUN touch eduverse-frontend/index.html
-RUN touch eduverse-frontend/src/main.rs
-RUN echo "fn main() {}" > eduverse-frontend/src/main.rs
+RUN mkdir -p tutorverse-frontend/src
+COPY tutorverse-frontend/Cargo.toml ./tutorverse-frontend/Cargo.toml
+RUN touch tutorverse-frontend/index.html
+RUN touch tutorverse-frontend/src/main.rs
+RUN echo "fn main() {}" > tutorverse-frontend/src/main.rs
 
-WORKDIR /usr/src/app/eduverse-frontend
+WORKDIR /usr/src/app/tutorverse-frontend
 RUN trunk build --release
 
 WORKDIR /usr/src/app
 
 # remove template files
-RUN rm -r eduverse-frontend
-RUN rm -r eduverse-anchor
+RUN rm -r tutorverse-frontend
+RUN rm -r tutorverse-anchor
 
 # build bin & libs
-RUN rm ./target/wasm32-unknown-unknown/release/deps/eduverse_frontend*
-RUN rm ./target/wasm32-unknown-unknown/release/deps/libeduverse_contract*
+RUN rm ./target/wasm32-unknown-unknown/release/deps/tutorverse_frontend*
+RUN rm ./target/wasm32-unknown-unknown/release/deps/libtutorverse_contract*
 RUN rm ./target/release/deps/libanchor_wasm*
 
 # copy over source code and deps
-COPY eduverse-anchor eduverse-anchor
-COPY eduverse-frontend eduverse-frontend
+COPY tutorverse-anchor tutorverse-anchor
+COPY tutorverse-frontend tutorverse-frontend
 
-WORKDIR /usr/src/app/eduverse-frontend
+WORKDIR /usr/src/app/tutorverse-frontend
 RUN trunk build --release
 
 FROM nginx:alpine as runner
 
-COPY --from=builder /usr/src/app/eduverse-frontend/dist /usr/share/nginx/html
-COPY ./eduverse-frontend/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /usr/src/app/tutorverse-frontend/dist /usr/share/nginx/html
+COPY ./tutorverse-frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 

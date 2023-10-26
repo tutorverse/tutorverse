@@ -1,6 +1,6 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
-import { EduverseContract } from "../../target/types/eduverse_contract";
+import { TutorverseContract } from "../../target/types/tutorverse_contract";
 
 import { expect } from "chai";
 
@@ -22,11 +22,11 @@ import {
   deriveTeacherProfile
 } from "./pda";
 
-describe("eduverse-contract", () => {
+describe("tutorverse-contract", () => {
   // Configure the client to use the local cluster.
   anchor.setProvider(anchor.AnchorProvider.env());
 
-  const program = anchor.workspace.EduverseContract as Program<EduverseContract>;
+  const program = anchor.workspace.TutorverseContract as Program<TutorverseContract>;
 
 
   const SUBJECT_ONE: number = 42;
