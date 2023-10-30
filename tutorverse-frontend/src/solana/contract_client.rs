@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use crate::types::CreateTeacherInstruction;
+use crate::types::{CreateStudentInstruction, CreateTeacherInstruction};
 
 use super::rpc_client::SolanaRpcClient;
 use anyhow::{Context, Result};
@@ -43,6 +43,7 @@ impl Default for ContractClient {
 pub enum TutorverseInstruction {
     Initialize,
     CreateTeacher(CreateTeacherInstruction),
+    CreateStudent(CreateStudentInstruction),
     RegisterSubject(u32),
 }
 
@@ -51,6 +52,7 @@ impl TutorverseInstruction {
         match self {
             TutorverseInstruction::Initialize => sighash("initialize"),
             TutorverseInstruction::CreateTeacher(_) => sighash("create_teacher_profile"),
+            TutorverseInstruction::CreateStudent(_) => sighash("create_student_profile"),
             TutorverseInstruction::RegisterSubject(_) => sighash("teacher_register_subject"),
         }
     }
@@ -61,7 +63,8 @@ impl TutorverseInstruction {
         let args = match self {
             TutorverseInstruction::CreateTeacher(teacher) => to_vec(&teacher)?,
             TutorverseInstruction::RegisterSubject(subject_id) => subject_id.to_le_bytes().to_vec(),
-            _ => vec![],
+            TutorverseInstruction::CreateStudent(student) => to_vec(&student)?,
+            TutorverseInstruction::Initialize => vec![],
         };
 
         if !args.is_empty() {
@@ -107,6 +110,10 @@ impl ContractClient {
         let tx = Transaction::new_unsigned(msg);
 
         Ok(tx)
+    }
+
+    pub fn create_student() -> Result<()> {
+        Ok(())
     }
 
     pub fn create_config(&self, payer: &Pubkey) -> Result<Transaction> {
@@ -245,6 +252,37 @@ impl ContractClient {
         Ok(tx)
     }
 
+    pub async fn build_create_student_tx(
+        &self,
+        instr: CreateStudentInstruction,
+        payer: &Pubkey,
+    ) -> Result<Transaction> {
+        let conf = self.get_config().await?;
+
+        let (conf_pda, _) = derive_program_address_str("config", &None)?;
+        let (student_pda, _) = derive_program_address_str("student", &Some(*payer))?;
+
+        let (student_lookup_pda, _) = derive_program_address(
+            &vec![
+                "student_by_id".as_bytes(),
+                &conf.count_students.to_le_bytes(),
+            ],
+            &None,
+        )?;
+
+        let accounts = vec![
+            AccountMeta::new(*payer, true),
+            AccountMeta::new(conf_pda, false),
+            AccountMeta::new(student_pda, false),
+            AccountMeta::new(student_lookup_pda, false),
+            AccountMeta::new(*SYS_VAR_RENT, false),
+            AccountMeta::new(*SYSTEM_PROGRAM_ID, false),
+        ];
+
+        let tx = self.create_tx(payer, TutorverseInstruction::CreateStudent(instr), accounts)?;
+        Ok(tx)
+    }
+
     #[cfg(test)]
     pub async fn send_tx(&self, tx: Transaction) -> Result<String> {
         self.inner.send_transaction(&tx).await
@@ -352,6 +390,28 @@ mod tests {
 
         let unsigned_tx = client
             .build_create_teacher_tx(instr, &TEST_KEYPAIR.pubkey())
+            .await?;
+        let tx = client.inner.sign_tx(unsigned_tx, &TEST_KEYPAIR).await?;
+
+        let tx_hash = client.send_tx(tx).await?;
+
+        log::debug!("\n\ntx_hash: {:?}\n\n", tx_hash);
+        Ok(())
+    }
+
+    #[wasm_bindgen_test]
+    async fn test_create_student() -> Result<()> {
+        wasm_logger::init(wasm_logger::Config::default());
+
+        let client = ContractClient::default();
+
+        let instr = CreateStudentInstruction {
+            title: "test".to_string(),
+            contact_info: "test".to_string(),
+        };
+
+        let unsigned_tx = client
+            .build_create_student_tx(instr, &TEST_KEYPAIR.pubkey())
             .await?;
         let tx = client.inner.sign_tx(unsigned_tx, &TEST_KEYPAIR).await?;
 

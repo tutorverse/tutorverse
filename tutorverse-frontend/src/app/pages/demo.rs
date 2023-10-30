@@ -2,7 +2,12 @@ use std::rc::Rc;
 
 use yew::prelude::*;
 
-use crate::app::services::wallet::WalletContext;
+use crate::app::{
+    components::{
+        student_signup_dialog::StudentSignUpDialog, teacher_signup_dialog::TeacherSignUpDialog,
+    },
+    services::wallet::WalletContext,
+};
 
 #[function_component(Demo)]
 pub fn demo() -> Html {
@@ -30,10 +35,9 @@ pub fn demo() -> Html {
             <h4>{"You have not selected your role!"}</h4>
             <h5>{"Please select your role to continue!"}</h5>
             <div class="mt-4">
-                <button classes="btn btn-outline-light btn-lg ms-4 me-4"> { "Teacher" } </button>
-                <button classes="btn btn-outline-light btn-lg ms-4 me-4"> { "Student" } </button>
+                <TeacherSignUpDialog />
+                <StudentSignUpDialog />
             </div>
-
         </div>
     };
 
@@ -43,10 +47,12 @@ pub fn demo() -> Html {
         </div>
     };
 
-    let role_view = match wallet.is_connected() {
-        true => has_role,
-        false => has_no_role,
-    };
+    // let role_view = match wallet.is_connected() {
+    //     true => has_role,
+    //     false => has_no_role,
+    // };
+
+    let role_view = has_no_role;
 
     html! {
         <div class="container">

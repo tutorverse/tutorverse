@@ -8,7 +8,7 @@ use super::{
     pages::{
         demo::Demo, teacher_intro::TeacherIntro, teacher_profile::TeacherProfile,
         teacher_public_profile::TeacherPublicProfile, teacher_search::TeacherSearch,
-        teacher_signup::TeacherSignUp, test_all::TestAll,
+        teacher_signup::TeacherSignUpPage, test_all::TestAll,
     },
 };
 
@@ -44,7 +44,7 @@ pub fn switch(routes: Route) -> Html {
         Route::Home => html! { <Home />},
         Route::ComponentDatePicker => html! { <DatePicker />},
         Route::TeacherIntro => html! { <TeacherIntro />},
-        Route::TeacherSignUp => html! { <TeacherSignUp />},
+        Route::TeacherSignUp => html! { <TeacherSignUpPage />},
         Route::TeacherSearch => html! { <TeacherSearch /> },
         Route::TeacherProfile => html! { <TeacherProfile /> },
         Route::TeacherPublicProfile => html! { <TeacherPublicProfile /> },
